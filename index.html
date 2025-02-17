@@ -8,15 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Add delivery message banner -->
+    <!-- Update the delivery banner style -->
     <div class="delivery-banner">
-        ১০ টির বেশি প্রোডাক্ট অর্ডার করলে ডেলিভারি চার্জ ফ্রি! 🎉
+        <h2>🎁 স্পেশাল অফার! 🎁</h2>
+        <p>১০ টির বেশি প্রোডাক্ট অর্ডার করলে ডেলিভারি চার্জ ফ্রি!</p>
     </div>
 
     <header>
         <div class="logo">
             <h1>Hand Made Haven</h1>
-            <p>Made with love</p>
+            <p>Crafted with Love & Care</p>
         </div>
         <div class="header-buttons">
             <button id="cartBtn" onclick="toggleCart()">
@@ -30,9 +31,12 @@
         <div class="products-grid" id="productsGrid"></div>
     </main>
 
-    <!-- Cart Sidebar -->
+    <!-- Update the cart sidebar -->
     <div id="cartSidebar" class="cart-sidebar">
-        <h2>Your Cart</h2>
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
         <div id="cartItems"></div>
         <div class="cart-total">
             <h3>Subtotal: ৳<span id="cartSubtotal">0</span></h3>
