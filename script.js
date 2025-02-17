@@ -63,7 +63,29 @@ setTimeout(() => {
 }, 15000);
 
 function addToCart(productId) {
-    const quantity = prompt('How many would you like to order?');
+    const quantityPrompt = document.createElement('div');
+    quantityPrompt.className = 'quantity-prompt';
+    quantityPrompt.innerHTML = `
+        <div class="prompt-content">
+            <h3>আপনি কয়টা প্রোডাক্ট কিনতে চান?</h3>
+            <select id="quantitySelect">
+                ${Array.from({length: 20}, (_, i) => 
+                    `<option value="${i + 1}">${i + 1}</option>`
+                ).join('')}
+            </select>
+            <div class="prompt-buttons">
+                <button onclick="confirmQuantity(${productId})">ঠিক আছে</button>
+                <button onclick="closeQuantityPrompt()">বাতিল</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(quantityPrompt);
+}
+
+function confirmQuantity(productId) {
+    const quantitySelect = document.getElementById('quantitySelect');
+    const quantity = quantitySelect.value;
+    
     if (quantity && !isNaN(quantity) && quantity > 0) {
         const product = products.find(p => p.id === productId);
         cart.push({
@@ -71,6 +93,14 @@ function addToCart(productId) {
             quantity: parseInt(quantity)
         });
         updateCart();
+    }
+    closeQuantityPrompt();
+}
+
+function closeQuantityPrompt() {
+    const prompt = document.querySelector('.quantity-prompt');
+    if (prompt) {
+        prompt.remove();
     }
 }
 
