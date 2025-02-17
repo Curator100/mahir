@@ -1,511 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hand Made Haven | Artisanal Creations</title>
-  <style>
-    :root {
-      --primary: #FF7F50;
-      --secondary: #2F4F4F;
-      --accent: #FFD700;
-      --light: #FFF8DC;
-      --dark: #2E2E2E;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-    
-    body {
-      background: var(--light);
-      color: var(--dark);
-      line-height: 1.6;
-    }
-    
-    header {
-      background: var(--primary);
-      padding: 1.2rem;
-      color: white;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    header h1 {
-      font-size: 1.8rem;
-      letter-spacing: 1px;
-      margin-bottom: 0.3rem;
-    }
-    
-    header p {
-      font-size: 1rem;
-    }
-    
-    main.products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-      margin-top: 80px;
-    }
-    
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-    
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .product-img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border-bottom: 3px solid var(--primary);
-    }
-    
-    .product-info {
-      padding: 1.2rem;
-      text-align: center;
-    }
-    
-    .product-info h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1.3rem;
-      color: var(--primary);
-    }
-    
-    .price-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin: 0.8rem 0;
-    }
-    
-    .original-price {
-      color: var(--secondary);
-      text-decoration: line-through;
-      opacity: 0.7;
-    }
-    
-    .discounted-price {
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 1.2rem;
-    }
-    
-    .cta-button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      border-radius: 25px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .cta-button:hover {
-      background: var(--secondary);
-      transform: scale(1.02);
-    }
-    
-    .fixed-buttons {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 1000;
-    }
-    
-    .fab {
-      background: var(--primary);
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    
-    .fab:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Modal Enhancements */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-    }
-    
-    .modal-content {
-      background: white;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      transform: translateY(-50px);
-      opacity: 0;
-      transition: all 0.4s ease;
-    }
-    
-    .modal-header {
-      padding: 1.2rem;
-      border-bottom: 2px solid var(--light);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .modal-body {
-      padding: 1.2rem;
-      max-height: 60vh;
-      overflow-y: auto;
-    }
-    
-    /* Discount Popup Animation */
-    @keyframes slideIn {
-      from { bottom: -100px; }
-      to { bottom: 20px; }
-    }
-    
-    .discount-popup {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--secondary);
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 30px;
-      display: none;
-      align-items: center;
-      gap: 1rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      animation: slideIn 0.5s ease;
-      font-size: 1rem;
-      text-align: center;
-    }
-    
-    .discount-popup::before {
-      content: '🎁';
-      font-size: 1.5rem;
-    }
-    
-    /* Form Styling */
-    .form-input {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.8rem 0;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      transition: border-color 0.3s ease;
-    }
-    
-    .form-input:focus {
-      border-color: var(--primary);
-      outline: none;
-    }
-    
-    /* Footer */
-    .footer {
-      background: var(--secondary);
-      color: white;
-      padding: 2rem;
-      text-align: center;
-      margin-top: 3rem;
-    }
-    
-    .contact-info {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 1rem 0;
-    }
-    
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Made Haven</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Background Music (auto plays 1.mp3 in loop) -->
-  <audio id="bg-audio" src="1.mp3" autoplay loop></audio>
-  
-  <header>
-    <h1>HAND MADE HAVEN</h1>
-    <p>Crafted with love &amp; care</p>
-  </header>
-  
-  <main class="products-grid" id="products"></main>
-  
-  <div class="fixed-buttons">
-    <button class="fab" onclick="toggleCart()">Cart (<span id="cart-count">0</span>)</button>
-    <button class="fab" onclick="window.location.href='chat.html'">Chat</button>
-  </div>
-  
-  <!-- Cart Modal -->
-  <div class="modal" id="cartModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Your Cart</h3>
-        <span onclick="toggleCart()" style="cursor: pointer;">×</span>
-      </div>
-      <div class="modal-body" id="cart-items"></div>
+    <!-- Add delivery message banner -->
+    <div class="delivery-banner">
+        ১০ টির বেশি প্রোডাক্ট অর্ডার করলে ডেলিভারি চার্জ ফ্রি! 🎉
     </div>
-  </div>
-  
-  <!-- Order Form Modal -->
-  <div class="modal" id="orderModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Shipping Details</h3>
-        <span onclick="toggleForm()" style="cursor: pointer;">×</span>
-      </div>
-      <div class="modal-body">
-        <input type="text" class="form-input" placeholder="Full Name" id="name" />
-        <input type="text" class="form-input" placeholder="Delivery Address" id="address" />
-        <input type="tel" class="form-input" placeholder="Phone Number" id="phone" />
-        <button class="cta-button" onclick="submitOrder()">Complete Order</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Discount Popup -->
-  <div class="discount-popup" id="discountPopup">
-    ১০% এক্সক্লুসিভ ডিসকাউন্ট!<br />
-    শুধুমাত্র ৫ ঘণ্টা বাকি।<br />
-    দ্রুত কিনুন! 🚀 🎉
-  </div>
-  
-  <footer class="footer">
-    <div class="contact-info">
-      <div class="contact-item">📞 +8801712524912</div>
-      <div class="contact-item">📧 rayhanchy576@gmail.com</div>
-    </div>
-    <p>© 2024 Hand Made Haven. All rights reserved</p>
-  </footer>
-  
-  <script>
-    // Define cool Bengali names for each product
-    const productNames = [
-      "Valobasha", "Jomuna", "July", "Meghla", "Ruposhi", "Chandni", 
-      "Shonar", "Borsha", "Nodir", "Aparajita", "Anondomoy", "Priyo"
-    ];
-    
-    // Create 12 products with pricing rules:
-    // The given discounted price for:
-    // - Product 1: 60 taka
-    // - Products 2–8: 120 taka
-    // - Products 9–12: 350 taka
-    // The original price (shown struck-through) is 10% higher than the discounted price.
-    const products = Array.from({ length: 12 }, (_, i) => {
-      let discountedPrice;
-      if (i === 0) {
-        discountedPrice = 60;
-      } else if (i < 8) { // indices 1 to 7
-        discountedPrice = 120;
-      } else {
-        discountedPrice = 350;
-      }
-      return {
-        id: i + 1,
-        name: productNames[i],
-        // Store discounted price
-        price: discountedPrice,
-        image: `${i + 1}.jpg`,
-        description: 'Handcrafted with premium materials and attention to detail'
-      };
-    });
-    
-    // Render products into the grid
-    document.getElementById('products').innerHTML = products.map(product => `
-      <article class="product-card">
-        <img src="${product.image}" class="product-img" alt="${product.name}" />
-        <div class="product-info">
-          <h3>${product.name}</h3>
-          <p class="product-description">${product.description}</p>
-          <div class="price-container">
-            <span class="original-price">৳${(product.price / 0.9).toFixed(2)}</span>
-            <span class="discounted-price">৳${product.price.toFixed(2)}</span>
-          </div>
-          <button class="cta-button" onclick="addToCart(${product.id})">
-            Add to Cart
-          </button>
+
+    <header>
+        <div class="logo">
+            <h1>Hand Made Haven</h1>
+            <p>Made with love</p>
         </div>
-      </article>
-    `).join('');
-    
-    // Retrieve cart from localStorage or initialize empty
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Add a product to the cart
-    function addToCart(productId) {
-      const product = products.find(p => p.id === productId);
-      const quantity = prompt(`আপনি কতগুলি "${product.name}" কিনতে চান?`);
-      if (quantity && quantity > 0) {
-        cart.push({
-          ...product,
-          quantity: parseInt(quantity),
-          // Total is based on the discounted price
-          total: (product.price * parseInt(quantity))
-        });
-        updateCart();
-        localStorage.setItem('cart', JSON.stringify(cart));
-        showCartNotification();
-      }
-    }
-    
-    function showCartNotification() {
-      // A simple animation for the cart button
-      const cartButton = document.querySelector('.fixed-buttons button:first-child');
-      cartButton.style.transform = 'scale(1.2)';
-      setTimeout(() => cartButton.style.transform = 'scale(1)', 300);
-    }
-    
-    // Update the cart display including a note about the delivery charge
-    function updateCart() {
-      document.getElementById('cart-count').textContent = cart.length;
-      const cartTotal = cart.reduce((sum, item) => sum + parseFloat(item.total), 0);
-      const finalTotal = cartTotal + 70; // Adding delivery charge of 70 taka
-      document.getElementById('cart-items').innerHTML = `
-        ${cart.map(item => `
-          <div class="cart-item" style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-            <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
-            <div>
-              <h4 style="margin: 0 0 5px 0;">${item.name}</h4>
-              <p style="margin: 0;">Quantity: ${item.quantity}</p>
-              <p style="margin: 0;">Total: ৳${item.total.toFixed(2)}</p>
-            </div>
-          </div>
-        `).join('')}
-        ${cart.length ? `
-          <p style="font-size: 0.9rem; color: var(--secondary); text-align: center;">Note: A delivery charge of ৳70 is added.</p>
-          <button class="cta-button" style="margin-top: 1rem;" onclick="showOrderForm()">
-            Checkout (৳${finalTotal.toFixed(2)})
-          </button>
-        ` : ''}
-      `;
-    }
-    
-    // Modal Controls for Cart
-    function toggleCart() {
-      const modal = document.getElementById('cartModal');
-      if (modal.style.display === 'flex') {
-        modal.style.display = 'none';
-      } else {
-        updateCart();
-        modal.style.display = 'flex';
-        setTimeout(() => {
-          modal.querySelector('.modal-content').style.transform = 'translateY(0)';
-          modal.querySelector('.modal-content').style.opacity = '1';
-        }, 10);
-      }
-    }
-    
-    // Modal Controls for Order Form
-    function toggleForm() {
-      const orderModal = document.getElementById('orderModal');
-      if (orderModal.style.display === 'flex') {
-        orderModal.style.display = 'none';
-      } else {
-        orderModal.style.display = 'flex';
-        setTimeout(() => {
-          orderModal.querySelector('.modal-content').style.transform = 'translateY(0)';
-          orderModal.querySelector('.modal-content').style.opacity = '1';
-        }, 10);
-      }
-    }
-    
-    function showOrderForm() {
-      document.getElementById('cartModal').style.display = 'none';
-      toggleForm();
-    }
-    
-    // Close modals when clicking outside their content
-    window.onclick = function(event) {
-      const modals = document.querySelectorAll('.modal');
-      modals.forEach(modal => {
-        if (event.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-    }
-    
-    // Telegram Integration for Order Submission
-    async function submitOrder() {
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-    
-      if (!name || !address || !phone) {
-        alert('Please fill all required fields');
-        return;
-      }
-      
-      const cartTotal = cart.reduce((sum, item) => sum + parseFloat(item.total), 0);
-      const finalTotal = cartTotal + 70; // Include delivery charge
-    
-      const message = `📦 New Order!\n\nName: ${name}\nAddress: ${address}\nPhone: ${phone}\n\nItems:\n` +
-        cart.map(item => `➤ ${item.name} x${item.quantity} - ৳${item.total.toFixed(2)}`).join('\n') +
-        `\n\nDelivery Charge: ৳70.00\nTotal: ৳${finalTotal.toFixed(2)}`;
-    
-      const botToken = '7447671480:AAFtEWOh_y3k5UpIeUnV-5fJdV3L-RlqC6M';
-      const chatId = '906269717';
-      
-      try {
-        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`);
-        alert('Order placed successfully! Our team will contact you shortly.');
-        cart = [];
-        localStorage.removeItem('cart');
-        updateCart();
-        toggleForm();
-      } catch (error) {
-        alert('Error submitting order. Please try again.');
-      }
-    }
-    
-    // Discount Popup: Show after 15 seconds, then hide after 7 seconds
-    setTimeout(() => {
-      const popup = document.getElementById('discountPopup');
-      popup.style.display = 'flex';
-      setTimeout(() => {
-        popup.style.display = 'none';
-      }, 7000);
-    }, 15000);
-    
-    // Initialize cart count on page load
-    updateCart();
-  </script>
+        <div class="header-buttons">
+            <button id="cartBtn" onclick="toggleCart()">
+                Cart (<span id="cartCount">0</span>)
+            </button>
+            <button id="chatBtn" onclick="toggleChat()">Chat Now</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="products-grid" id="productsGrid"></div>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <h2>Your Cart</h2>
+        <div id="cartItems"></div>
+        <div class="cart-total">
+            <h3>Subtotal: ৳<span id="cartSubtotal">0</span></h3>
+            <h3>Delivery: ৳<span id="deliveryCharge">70</span></h3>
+            <h3>Total: ৳<span id="cartTotal">0</span></h3>
+            <button onclick="showCheckoutForm()">Buy Now</button>
+        </div>
+    </div>
+
+    <!-- Discount Popup -->
+    <div id="discountPopup" class="popup">
+        <div class="popup-content">
+            <h2>Special Offer!</h2>
+            <p>10% discount for you, for the next 5 hours!</p>
+        </div>
+    </div>
+
+    <!-- Checkout Form -->
+    <div id="checkoutForm" class="popup">
+        <div class="popup-content">
+            <h2>Checkout</h2>
+            <form id="orderForm" onsubmit="submitOrder(event)">
+                <input type="text" placeholder="Name" required name="name">
+                <input type="text" placeholder="Address" required name="address">
+                <input type="tel" placeholder="Phone Number" required name="phone">
+                <button type="submit">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="chat-window">
+        <iframe src="chat.html" frameborder="0"></iframe>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-</html>
+</html> 
